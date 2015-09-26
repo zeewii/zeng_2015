@@ -1,0 +1,11 @@
+第0次循环传输文件开始
+第0次循环传输文件失败，原因如下:[Errno 9] Bad file descriptor
+循环传输文件完成！第0次循环传输文件开始
+第0次循环传输文件失败，原因如下:[Errno 9] Bad file descriptor
+第1次循环传输文件开始
+第1次循环传输文件失败，原因如下:[Errno 9] Bad file descriptor
+循环传输文件完成！第0次循环传输文件开始
+第0次循环传输文件失败，原因如下:[Errno 9] Bad file descriptor
+第1次循环传输文件开始
+第1次循环传输文件失败，原因如下:[Errno 9] Bad file descriptor
+循环传输文件完成！
