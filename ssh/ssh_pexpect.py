@@ -53,7 +53,6 @@ def ssh_command(user,ip,password,command):
         else:
             print '输入命令后等待超时！'
 
-
         #将执行命令的时间和结果以追加的形式保存到ssh_log.txt文件中备份文件
         f = open('ssh_log.txt','a')
         str1 = str(datetime.datetime.now())+' '+command
@@ -63,6 +62,7 @@ def ssh_command(user,ip,password,command):
         result = child.before
         return result
 
+    #异常打印原因并删除public key
     except pexpect.ExceptionPexpect, e:
         print "ssh连接失败，正在重启进程",str(e)
         pexpect.run("rm -rf ~/.ssh")

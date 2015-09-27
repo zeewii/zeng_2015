@@ -34,6 +34,7 @@ def ssh_command(user,ip,password,command):
         # 将 prompt 前所有内容返回给函数,即命令的执行结果
         return result
 
+    #异常打印原因并删除public key
     except pxssh.ExceptionPxssh,e:
         print "ssh连接失败，正在重启进程",str(e)
         subprocess.call("rm -rf ~/.ssh",shell=True)
