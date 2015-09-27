@@ -4,7 +4,6 @@
 
 
 import datetime
-
 import pexpect
 
 
@@ -41,8 +40,19 @@ def ssh_command(user,ip,password,command):
 
         #如果出现的字符串为'password: ', 输入密码
         child.sendline(password)
-        #期望出现pexpect.EOF，即子程序（ssh）退出
-        child.expect(pexpect.EOF)
+
+        #列出输入密码后期望出现的字符串，'password',EOF，超时
+        i = child.expect(['password: ',pexpect.EOF,pexpect.TIMEOUT])
+        #匹配到字符'password: '，打印密码错误
+        if i == 0:
+            print '密码输入错误！'
+        #匹配到了EOF，打印ssh登录成功，并输入命令后成功退出
+        elif i == 1:
+            print '恭喜,ssh登录输入命令成功！'
+        #匹配到了超时，打印超时
+        else:
+            print '输入命令后等待超时！'
+
 
         #将执行命令的时间和结果以追加的形式保存到ssh_log.txt文件中备份文件
         f = open('ssh_log.txt','a')
@@ -54,17 +64,17 @@ def ssh_command(user,ip,password,command):
         return result
 
     except pexpect.ExceptionPexpect, e:
-        print u"ssh连接失败，正在重启进程",str(e)
+        print "ssh连接失败，正在重启进程",str(e)
         pexpect.run("rm -rf ~/.ssh")
 
 
 
 
 
-'''if __name__ == '__main__':
+if __name__ == '__main__':
     user = 'zeng'
     ip = '192.168.88.11'
     password = 'zeng'
     command ='ifconfig'
     result = ssh_command(user,ip,password,command)
-    print result'''
+    print result
