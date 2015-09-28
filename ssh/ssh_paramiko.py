@@ -12,7 +12,7 @@ def ssh_command(ip,username,passwd,cmd):
         ssh.connect(ip,22,username,passwd,timeout=5)
         for m in cmd:
             stdin, stdout, stderr = ssh.exec_command(m)
-            stdin.write('y')   #简单交互，输入 ‘Y’
+            #stdin.write('y')   #简单交互，输入 ‘Y’
             out = stdout.readlines()
             #屏幕输出
             for o in out:

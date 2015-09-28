@@ -28,13 +28,14 @@ def modify_remote_file(user,ip,password,dir,filename,content):
     subprocess.call('rm -rf ../data_zeng/%s'%filename,shell=True)
 
 
+
 if __name__ == "__main__":
-    filename = '11'
-    ip = '192.168.88.11'
-    user = 'zeng'
-    password = 'zeng'
-    dir = '/home/zeng/ftp/'
-    content = ['1\n','2\n','3\n']
+    filename = 'wifidog'
+    ip = '192.168.11.1'
+    user = 'root'
+    password = 'BHU@100msh$%^'
+    dir = '/etc/version/'
+    content = ['3\n']
 
     modify_remote_file(user,ip,password,dir,filename,content)
 

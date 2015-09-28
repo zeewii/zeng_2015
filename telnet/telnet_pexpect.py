@@ -69,7 +69,7 @@ def telnet_command(user,ip,password,command):
 
 if __name__ == '__main__':
     user = 'zeng'
-    ip = '192.168.88.11'
+    ip = '192.168.11.94'
     password = 'zeng'
     command ='ifconfig'
     result = telnet_command(user,ip,password,command)

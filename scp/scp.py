@@ -50,7 +50,7 @@ def scp_to_remote(filename,ip,user,password,dir):
 
     except pexpect.ExceptionPexpect, e:
         print "scp连接失败",str(e)
-
+        pexpect.run("rm -rf ~/.ssh")
 
 #描述：本函数实现通过scp从remote主机上拷贝文件到本机上
 #输入：filename-远程文件名，user-登录名,ip-登录ip,
@@ -99,16 +99,17 @@ def scp_to_local(ip,user,password,filename,dir):
 
     except pexpect.ExceptionPexpect, e:
         print "scp连接失败",str(e)
+        pexpect.run("rm -rf ~/.ssh")
 
 
 if __name__ == '__main__':
-    filename = '/home/zeng/22'
-    ip = '192.168.88.11'
-    user = 'zeng'
-    password = 'zeng'
-    dir = '/home/zeng/ftp/'
-    scp_to_local(ip,user,password,filename,dir)
-
+    filename = '/home/zeng/PycharmProjects/BHU/data/BHU_tcpdump/libpcap.so.1.3'
+    ip = '192.168.11.1'
+    user = 'root'
+    password = 'BHU@100msh$%^'
+    dir = '/home/zeng/'
+    #scp_to_remote(filename,ip,user,password,dir)
+    scp_to_local(ip,user,password,'/tmp/wanlog.log',dir)
 
 
 
