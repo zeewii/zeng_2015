@@ -14,6 +14,7 @@ from network.wifidog import general_control
 from login import login_control
 from data import data
 from network.interface import interface_business
+from network.tcpdump import tcpdump_bussiness,tcpdump_control
 
 
 class Testcapture_wan_packet(unittest.TestCase):
@@ -49,16 +50,14 @@ class Testcapture_wan_packet(unittest.TestCase):
         time.sleep(60)
         print '5'
         #ssh登录路由输入tcpdump抓包
-        ssh.tcpdump_command(user,ip,password,'tcpdump -i eth1 -s0 -w /tmp/wanlog')
+        tcpdump_control.tcpdump_command(user,ip,password,'tcpdump -i eth1 -s0 -w /tmp/wanlog')
         tcpdump_control.scp_to_local(ip,user,password,'/tmp/wanlog','/home/zeng/')
 
         f = open('/home/zeng/wanlog')
         log = f.read()
         f.close()
 
-        if 'GET /index/ping/?gw_id=' and \
-                    'route_mac=84:82:F4:0D:22:1C&route_version=100MSHBHU2S_R_2.2.0&wlan_mac_0=84:82:F4:0D:22:1D' \
-                    in log:
+        if 'GET /index/ping/?gw_id=' in log:
             print 'pass'
         else:
          print 'failed'
