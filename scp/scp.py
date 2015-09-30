@@ -103,14 +103,13 @@ def scp_to_local(ip,user,password,filename,dir):
 
 
 if __name__ == '__main__':
-    filename = '/home/zeng/PycharmProjects/BHU/data/BHU_tcpdump/libpcap.so.1.3'
+    filename = '/home/zeng/PycharmProjects/BHU/data/BHU_tcpdump/tcpdump'
     ip = '192.168.11.1'
     user = 'root'
     password = 'BHU@100msh$%^'
     dir = '/home/zeng/'
     #scp_to_remote(filename,ip,user,password,dir)
-    scp_to_local(ip,user,password,'/tmp/wanlog.log',dir)
-
+    scp_to_local(ip,user,password,'/etc/crontabs/root',dir)
 
 
 

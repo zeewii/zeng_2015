@@ -7,11 +7,14 @@ import unittest
 import time
 
 from selenium import webdriver
-from connect import scp,ssh
+
+from connect import ssh
+from network.tcpdump import tcpdump_control
 from network.wifidog import general_control
-from login import login_control,login_business
+from login import login_control
 from data import data
 from network.interface import interface_business
+
 
 class Testcapture_wan_packet(unittest.TestCase):
     def setUp(self):
@@ -25,9 +28,9 @@ class Testcapture_wan_packet(unittest.TestCase):
         user = 'root'
         password = 'BHU@100msh$%^'
         #上传tcpdump到路由器
-        scp.scp_to_remote('/home/zeng/PycharmProjects/BHU/data/BHU_tcpdump/tcpdump',ip,user,password,'/usr/sbin/')
+        tcpdump_control.scp_to_remote('/home/zeng/PycharmProjects/BHU/data/BHU_tcpdump/tcpdump',ip,user,password,'/usr/sbin/')
         print '2'
-        scp.scp_to_remote('/home/zeng/PycharmProjects/BHU/data/BHU_tcpdump/libpcap.so.1.3',ip,user,password,'/usr/lib/')
+        tcpdump_control.scp_to_remote('/home/zeng/PycharmProjects/BHU/data/BHU_tcpdump/libpcap.so.1.3',ip,user,password,'/usr/lib/')
 
         print '3'
         #默认IP登录路由web页面
@@ -47,7 +50,7 @@ class Testcapture_wan_packet(unittest.TestCase):
         print '5'
         #ssh登录路由输入tcpdump抓包
         ssh.tcpdump_command(user,ip,password,'tcpdump -i eth1 -s0 -w /tmp/wanlog')
-        scp.scp_to_local(ip,user,password,'/tmp/wanlog','/home/zeng/')
+        tcpdump_control.scp_to_local(ip,user,password,'/tmp/wanlog','/home/zeng/')
 
         f = open('/home/zeng/wanlog')
         log = f.read()
