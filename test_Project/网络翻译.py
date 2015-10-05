@@ -1,89 +1,90 @@
-#coding=utf-8
-#描述：本模块实现有道翻译api，提交要查询的单词，返回json结果，然后对结果进行解析输出
-#作者：曾祥卫
-
-
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Date    : 2014-04-03 21:12:16
+# @Function: 有道翻译命令行版
+# @Author  : BeginMan
 
-#coding=utf-8
+import os
+import sys
+import urllib
+import urllib2
+reload(sys)
+sys.setdefaultencoding("utf-8")
+import simplejson as json
+import platform
+import datetime
 
-import urllib3
+API_KEY = '******'
+KEYFORM = '******'
 
-import json
+	
+def GetTranslate(txt):
+	url = 'http://fanyi.youdao.com/openapi.do?keyfrom=zeewii&key=705808643&type=data&doctype=<doctype>&version=1.1&q='
+	data = {
+	'keyfrom': KEYFORM,
+	'key': API_KEY,
+	'type': 'data',
+	'doctype': 'json',
+	'version': 1.1,
+	'q': txt
+	}
+	data = urllib.urlencode(data)
+	url = url+'?'+data
+	req = urllib2.Request(url)
+	response = urllib2.urlopen(req)
+	result = json.loads(response.read())
+	return result
+	
+def Sjson(json_data):
+	query = json_data.get('query','')				# 查询的文本
+	translation = json_data.get('translation','') 	# 翻译
+	basic = json_data.get('basic','')				# basic 列表
+	sequence = json_data.get('web',[])				# 短语列表
+	phonetic,explains_txt,seq_txt,log_word_explains = '','','',''
+	
+	# 更多释义
+	if basic:
+		phonetic = basic.get('phonetic','')			# 音标
+		explains = basic.get('explains',[])			# 更多释义 列表
+		for obj in explains:
+			explains_txt += obj+'\n'
+			log_word_explains += obj+','	
+	# 句子解析
+	if sequence:
+		for obj in sequence:
+			seq_txt += obj['key']+'\n'
+			values = ''
+			for i in obj['value']:
+				values += i+','
+			seq_txt += values+'\n'
+		
+	print_format = '*'*40+'\n'
+	print_format += u'查询对象:  %s [%s]\n' %(query,phonetic)	
+	print_format += explains_txt
+	print_format += '-'*20+'\n'+seq_txt
+	print_format += '*'*40+'\n'
+	print print_format
+	choices = raw_input(u'是否写入单词本,回复（y/n）:')
+	if choices in ['y','Y']:
+		filepath = r'/home/zeng/pyword/%s.xml' %datetime.date.today()
+		if (platform.system()).lower() == 'windows':
+			filepath = r'E:\pyword\%s.xml' %datetime.date.today()
+		fp = open(filepath,'a+')
+		file = fp.readlines()
+		if not file:
+			fp.write('<wordbook>\n')
+			fp.write(u"""    <item>\n    <word>%s</word>\n    <trans><![CDATA[%s]]></trans>\n    <phonetic><![CDATA[[%s]]]></phonetic>\n    <tags>%s</tags>\n    <progress>1</progress>\n    </item>\n\n""" %(query,log_word_explains,phonetic,datetime.date.today()))
+		fp.close()
+		print u'写入成功.'
 
-#ret = '''{"translation":["苹果"],"basic":{"phonetic":"'æpl","explains":["n. 苹果；家伙"]},"query":"apple","errorCode":0,"web":[{"value":["苹果","苹果公司","苹果汁","美国苹果"],"key":"Apple"},{"value":["苹果电脑","苹果电脑公司","苹果计算机","苹果公司"],"key":"Apple Computer"},{"value":["苹果公司","苹果","果公司","苹果股份有限公司"],"key":"Apple Inc"},{"value":["大苹果","纽约","大苹果城","纽约的别称"],"key":"big apple"},{"value":["苹果皮"],"key":"apple skin"},{"value":["苹果馅饼","苹果饼","苹果排","苹果蛋糕"],"key":"apple tart"},{"value":["苹果日报","韩版恶作之吻造型曝光"],"key":"Apple Daily"},{"value":["垫脚箱","因在早期电影制作中"],"key":"APPLE BOXES"},{"value":["炸苹果饼"],"key":"apple fritter"},{"value":["查拉尔·阿佩尔","阿佩尔","由查拉尔阿"],"key":"Gerald Apple"}]}'''
-
-def dealjson(ret):
-
-    ret = json.loads(ret)
-
-    error = ret['errorCode']
-
-    print error
-
-    if error == 20:
-
-        print '要翻译的文本过长'
-
-    elif error == 30:
-
-        print '无法进行有效的翻译'
-
-    elif error == 40:
-
-        print '不支持的语言类型'
-
-    elif error == 50:
-
-        print '无效的key'
-
-    elif error == 0:
-
-        trans = ret['translation']
-
-        for i in trans:
-
-            print i
-
-        print ret['query']
-
-        if 'basic' in ret.keys():
-
-            explain =  ret['basic']['explains']
-
-            for i in explain:
-
-                print i
-
-                web =ret['web']
-
-                for i in web:
-
-                    print i['key'],
-
-                    for j in i['value']:
-
-                        print j,
-
-                    print
+		
 
 
+def main():
+	while True:
+		txt = raw_input(u'请输入要查询的文本：\n')
+		if txt:
+			Sjson(GetTranslate(txt))
 
-if __name__=='__main__':
-
-    while True:
-
-        word = raw_input('input: ')
-
-        if word == '':
-
-            continue
-
-        word = urllib3.quote(word)
-
-        print word
-
-        url = 'http://fanyi.youdao.com/openapi.do?keyfrom={}&key={}&type=data&doctype=json&version=1.1&q='+word
-
-        ret = urllib3.urlopen(url).read()
-        dealjson(ret)
+if __name__ == '__main__':
+	main()

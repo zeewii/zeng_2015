@@ -41,7 +41,7 @@ def client_cmd(cmd):
         print u"Client端在终端输入命令失败，原因如下：\n%s"%e
 
 #描述：新建或打开文件，并写入内容
-#输入：filename-文件名(也可以是文件的路径),写入的内容,content-写入的内容
+#输入：filename-文件名(也可以是文件的路径),content-写入的内容(列表)
 #输出：无
 def modify_file(filename,content):
     #文件filename没有存在则新建文件，如果存在则会首先清空然后写入
@@ -53,3 +53,16 @@ def modify_file(filename,content):
         #关闭文件
         file.close()
 
+#描述：打开文件，替换第几行的内容
+#输入：filename-文件名(也可以是文件的路径),row-需要替换的第几行(从第0行开始),content-写入的内容（字符串或列表）
+#输出：无
+def modify_file2(filename,row,content):
+    #打开文件filename，以可读写的模式打开
+    file = open(filename,'r+')
+    try:
+        file.seek(row)
+        #把内容content写入文件filename
+        file.write(content)
+    finally:
+        #关闭文件
+        file.close()
