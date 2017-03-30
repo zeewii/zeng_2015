@@ -4,7 +4,6 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="jdk" jdkName="Python 2.7.9 (/usr/bin/python2.7)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="BHU2" />
-    <orderEntry type="module" module-name="H351" />
+    <orderEntry type="module" module-name="GWN76xx_demo" />
   </component>
 </module>

@@ -33,6 +33,40 @@ def ftp_data():
         print u"文件信息错误,具体信息：\n%s"%e
 
 
+#描述：调取运行taobao时所需要的数据
+#输入：目录下/data/data.xlsx-taobao
+#输出：以字典的形式输出basic中数据
+def data_taobao():
+    try:
+        #定义一个字典
+        basic = {}
+        #获取对应的表-basic_conf
+        table = file.sheet_by_name('taobao')
+        #获取表中设备版本
+        basic['address'] = table.cell_value(2,1)
+        basic['username'] = table.cell_value(3,1)
+        basic['password'] = table.cell_value(4,1)
+        basic['shopname'] = table.cell_value(5,1)
+        return basic
+    except IOError,e:
+        print u"文件信息错误,具体信息：\n%s"%e
+
+
+def zeng_1():
+    try:
+        #打开data.xlsx取测试所需数据
+        xlsFile = xlrd.open_workbook('../data_zeng/data.xlsx')
+        #获取文件中的对应的表
+        sh=xlsFile.sheet_by_name('mac')
+        #取测试所需的值
+        result = sh.col_values(0)[0:100]
+        return result
+    except IOError,e:
+        print u"文件信息错误,具体信息：\n%s"%e
+
+
+
+
 
 
 __author__ = 'zeng'

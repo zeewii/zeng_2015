@@ -4,6 +4,7 @@
 import uuid
 import os
 import commands
+import random
 
 #描述:获取本地mac地址
 #输入:
@@ -66,3 +67,22 @@ def modify_file2(filename,row,content):
     finally:
         #关闭文件
         file.close()
+
+
+#取随机mac
+def randomMAC():
+    mac = [ 0x00, 0x0c,
+        random.randint(0x00, 0x7f),
+        random.randint(0x00, 0x7f),
+        random.randint(0x00, 0xff),
+        random.randint(0x00, 0xff) ]
+    return ':'.join(map(lambda x: "%02x" % x, mac))
+
+#取随机ip地址
+def randomip():
+    a = random.randint(1,254)
+    b = random.randint(1,254)
+    c = random.randint(1,254)
+    d = random.randint(1,254)
+    ip = '%s.%s.%s.%s'%(a,b,c,d)
+    return ip

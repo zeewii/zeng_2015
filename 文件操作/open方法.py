@@ -1,7 +1,10 @@
-f = open('./test',"r+")
-f.seek(2)
-a = '2\n'
-f.write(a)
+f = open('./test')
+a = f.readlines()
+print a
+f.close()
+a[2] = '3\n'
+f = open('./test','w')
+f.writelines(a)
 f.close()
 
 f = open('./test')
